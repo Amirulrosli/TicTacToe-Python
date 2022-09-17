@@ -61,24 +61,34 @@ xImg = PhotoImage(file='x.png')
 oImg = PhotoImage(file='o.png')
 
 
-
+#First Interface (Instruction and Game Mode)
 def gameMode():
+    
+    #Initialize all components needed for first interface
+    #create Game header label
     gameHeader = Label(root, text="Welcome to Tic Tac Toe!",font=("Arial",18))
     gameHeader.grid(row=0,column=1,pady=10)
+    
+    #create instruction label
     instructionLabel = Label(root,text='1. The game is played on a grid that\'s 3 squares by 3 squares.\n2. You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.\n3. The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.\n4. When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.',anchor='e', justify='left')
     instructionLabel.grid(row=1,column=1,pady=10,padx=10)
+    
+    #create game mode label
     gameMode = Label(root, text="Select Game Mode:",font=("Arial",13))
     gameMode.grid(row=2,column=1)
+    
+    #create button for game mode options which are multiplayer and play against computer button
     multiBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#000000',fg='white',text='Multiplayer',command=lambda:playerOptions(False))
     multiBtn.grid(row=3,column=1,padx=10,pady=10)
-    compBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#ff0000',fg='white',text='Play with Computer',command=lambda:playerOptions(True))
+    compBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#ff0000',fg='white',text='Play Against Computer',command=lambda:playerOptions(True))
     compBtn.grid(row=4,column=1,padx=10,pady=10)
     
 
-#First Interface (Player 1 and 2 name)
+#Second Interface (Player 1 and 2 name)
 def playerOptions(computer):
     global computerTurn
     
+    #set computerTurn into computer variable pass when button is clicked
     computerTurn = computer
     
     #clear grid component
@@ -93,6 +103,7 @@ def playerOptions(computer):
     l2 = Label(root, text="Enter Player 2 Name: ")
     l2.grid(row=1,column=0)
     
+    #if computerTurn is True, set player 2 as a computer
     if computerTurn:
         player2.set("Computer")
         entry2 = Entry(root, bg="white", textvariable=player2,state='disabled')
@@ -120,7 +131,7 @@ def validateStart(player1,player2):
         background()
         
 
-#Second Interface (X and O game)
+#Third Interface (X and O game)
 def background():
     
     #pass global click 
@@ -218,23 +229,29 @@ def clickBtn(num,row,column,turnLabel):
     #Check which player win the game
     checkWin()
     
-    #if it is against computer execute computer turn after check who win
+    #if it is against computer execute computerMove to set computer turn after checkwin()
     if click==FALSE and computerTurn:
         computerMove(turnLabel)
 
+#function to play computer and set computer's turn
 def computerMove(turnLabel):
     
+    #if button 5 is empty, click button 5 and set it as 'O'
     if btn5.get()=='':
         clickBtn(5,1,1,turnLabel)
     else:
+        
+        #if not, loop through and set btnNo into random number from 1-9
         computer_Action = True
         while computer_Action:
             btnNo = random.randint(1,9)
             
+            #check if button/slot is already fully occupied, then break the loop, if not execute below
             if btnIsAvailable()==FALSE:
                 break
                 
-            
+            #match the random number to button, if matched, click the button and set it as 'O'
+            # set the computer_Action to False and break the loop
             match btnNo:
                 case 1:
                     if btn1.get()=='':
@@ -275,7 +292,7 @@ def computerMove(turnLabel):
                 
                 
 def btnIsAvailable():
-    
+    #check if button is already occupied by 'X' or 'O'
     if btn1.get()!='' and btn2.get()!='' and btn3.get()!='' \
        and btn4.get()!='' and btn5.get()!='' and btn6.get()!='' \
        and btn7.get()!='' and btn8.get()!='' and btn9.get()!=''  :  
@@ -354,7 +371,7 @@ def checkWin():
         tkinter.messagebox.showinfo("Game Over", "Its a Draw")
         restartGame()
 
-#create Line once player x or o wins
+#create straight line once player x or o wins
 def drawLines(value):
     lineCondition = [btn1.get() == value and btn2.get()==value and btn3.get()==value, \
        btn4.get() == value and btn5.get()==value and btn6.get()==value , \
@@ -365,7 +382,7 @@ def drawLines(value):
        btn1.get() == value and btn5.get()==value and btn9.get()==value , \
        btn3.get() == value and btn5.get()==value and btn7.get()==value]
     
-    #check which condition statement that return true (condition met)
+    #check which condition statement that return true (condition met) from lineCondition
     lineIndex = lineCondition.index(True)
     #set columns and line width and height
     cols = [0,1,2]
@@ -409,7 +426,7 @@ def drawLines(value):
 #function to display the line in the grid
 def displayLine(rows,cols,width,height):
     
-    #loops through the rows to add the canvas into the grid
+    #loops through the rows to add the canvas (line) into the grid
     for i in range(len(rows)):  
         #design the canvas into lines
         frame = Canvas(root,width=width,height=height,bg='#000000',borderwidth=.5,highlightbackground="#000000")

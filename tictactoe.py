@@ -480,7 +480,7 @@ def deleteComponent():
         
 
 
-#execute the playeroptions functions which is the first interface
+#execute the game mode and instruction interface
 gameMode()
 
 #event handler function

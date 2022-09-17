@@ -1,8 +1,21 @@
+'''
+Assessment 1: Tic Tac Toe Game
+
+Muhammad Amirul Amin Bin Rosli [B20210053] BSc in Information Security
+Ahmad Izzuddin Bin Azis [B20210115] BSc in Information Security
+Justin Ong Yue Xiang [B20210042] BSc in Computer Networking
+Bryant Kua Vui Lun [B20210411] BSc in Information Security
+
+
+'''
+
+
 from tkinter import *
 import tkinter.messagebox
+import random
 
 
-#initialize tkinter / to use method 
+#initialize tkinter / to use Tkinter method 
 root = Tk()
 
 #set interface title
@@ -36,6 +49,7 @@ newGame = StringVar()
 count = 0
 click = True 
 playerTurn = True
+computerTurn = False
 
 #win count for player 1 and 2
 player1Win = 0
@@ -46,8 +60,29 @@ player2Win = 0
 xImg = PhotoImage(file='x.png') 
 oImg = PhotoImage(file='o.png')
 
+
+
+def gameMode():
+    gameHeader = Label(root, text="Welcome to Tic Tac Toe!",font=("Arial",18))
+    gameHeader.grid(row=0,column=1,pady=10)
+    instructionLabel = Label(root,text='1. The game is played on a grid that\'s 3 squares by 3 squares.\n2. You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.\n3. The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.\n4. When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.',anchor='e', justify='left')
+    instructionLabel.grid(row=1,column=1,pady=10,padx=10)
+    gameMode = Label(root, text="Select Game Mode:",font=("Arial",13))
+    gameMode.grid(row=2,column=1)
+    multiBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#000000',fg='white',text='Multiplayer',command=lambda:playerOptions(False))
+    multiBtn.grid(row=3,column=1,padx=10,pady=10)
+    compBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#ff0000',fg='white',text='Play with Computer',command=lambda:playerOptions(True))
+    compBtn.grid(row=4,column=1,padx=10,pady=10)
+    
+
 #First Interface (Player 1 and 2 name)
-def playerOptions():
+def playerOptions(computer):
+    global computerTurn
+    
+    computerTurn = computer
+    
+    #clear grid component
+    deleteComponent()
     
     #label and input (entry widget for players name)
     l1 = Label(root, text="Enter Player 1 Name: ")
@@ -57,9 +92,16 @@ def playerOptions():
     
     l2 = Label(root, text="Enter Player 2 Name: ")
     l2.grid(row=1,column=0)
-    entry2 = Entry(root, bg="white", textvariable=player2)
-    #add label to grid by row and column
-    entry2.grid(row=1,column=1,padx=10,pady=10)
+    
+    if computerTurn:
+        player2.set("Computer")
+        entry2 = Entry(root, bg="white", textvariable=player2,state='disabled')
+        #add label to grid by row and column
+        entry2.grid(row=1,column=1,padx=10,pady=10)
+    else:
+        entry2 = Entry(root, bg="white", textvariable=player2)
+        #add label to grid by row and column
+        entry2.grid(row=1,column=1,padx=10,pady=10)
     
     #create startbutton component that execute validateStart() function
     startButton = Button(root,height=2,width=10,text="Start Game", command=lambda:validateStart(player1,player2))
@@ -82,7 +124,7 @@ def validateStart(player1,player2):
 def background():
     
     #pass global click 
-    global click
+    global click,computerTurn
     
     #create background w/ color for 9 buttons and add it into grid by row and column
     #each of this button (9 buttons) when clicked will execute clickBtn() function
@@ -141,7 +183,8 @@ def background():
         tkinter.messagebox.showinfo("Player's Turn", "Player 1: "+player1.get()+" Start First!")
     else:
         tkinter.messagebox.showinfo("Player's Turn", "Player 2: "+player2.get()+" Start First!")
-
+        if computerTurn:
+            computerMove(turnLabel)
     
 #once one of the 9 buttons clicked, it will execute clickBtn Function
 def clickBtn(num,row,column,turnLabel):
@@ -170,8 +213,76 @@ def clickBtn(num,row,column,turnLabel):
          #store O string value into the btn that holds stringVar object
         setBtn(num,'O')
     
+    
+    
     #Check which player win the game
     checkWin()
+    
+    #if it is against computer execute computer turn after check who win
+    if click==FALSE and computerTurn:
+        computerMove(turnLabel)
+
+def computerMove(turnLabel):
+    
+    if btn5.get()=='':
+        clickBtn(5,1,1,turnLabel)
+    else:
+        computer_Action = True
+        while computer_Action:
+            btnNo = random.randint(1,9)
+            
+            if btnIsAvailable()==FALSE:
+                break
+                
+            
+            match btnNo:
+                case 1:
+                    if btn1.get()=='':
+                        clickBtn(1,0,0,turnLabel)
+                        computer_Action = FALSE
+                case 2:
+                    if btn2.get()=='':
+                        clickBtn(2,0,1,turnLabel)
+                        computer_Action = FALSE
+                case 3:
+                     if btn3.get()=='':
+                        clickBtn(3,0,2,turnLabel)
+                        computer_Action = FALSE
+                case 4:
+                    if btn4.get()=='':
+                        clickBtn(4,1,0,turnLabel)
+                        computer_Action = FALSE
+                case 5:
+                    if btn5.get()=='':
+                        clickBtn(5,1,1,turnLabel)
+                        computer_Action = FALSE
+                case 6:
+                    if btn6.get()=='':
+                        clickBtn(6,1,2,turnLabel)
+                        computer_Action = FALSE
+                case 7:
+                    if btn7.get()=='':
+                        clickBtn(7,2,0,turnLabel)
+                        computer_Action = FALSE
+                case 8:
+                    if btn8.get()=='':
+                        clickBtn(8,2,1,turnLabel)
+                        computer_Action = FALSE
+                case 9:
+                    if btn9.get()=='':
+                        clickBtn(9,2,2,turnLabel)
+                        computer_Action = FALSE
+                
+                
+def btnIsAvailable():
+    
+    if btn1.get()!='' and btn2.get()!='' and btn3.get()!='' \
+       and btn4.get()!='' and btn5.get()!='' and btn6.get()!='' \
+       and btn7.get()!='' and btn8.get()!='' and btn9.get()!=''  :  
+        return FALSE
+    else:
+        return TRUE        
+    
 
 #store value x or o into button based on the button number 
 def setBtn(num, value):
@@ -359,7 +470,7 @@ def newGame():
     # execute playeroptions function for first interface
     clearBtn()
     deleteComponent()
-    playerOptions()
+    gameMode()
 
 def deleteComponent():
     #Delete all components in the grid
@@ -370,7 +481,7 @@ def deleteComponent():
 
 
 #execute the playeroptions functions which is the first interface
-playerOptions()
+gameMode()
 
 #event handler function
 root.mainloop()

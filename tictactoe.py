@@ -22,7 +22,7 @@ root = Tk()
 root.title("Tic Tac Toe")
 
 #set app icon (only support ico)
-root.iconbitmap('icon.ico')
+root.iconbitmap('favicon.ico')
 
 #disallow app to be resizable
 root.resizable(False,False)
@@ -51,14 +51,17 @@ click = True
 playerTurn = True
 computerTurn = False
 
-#win count for player 1 and 2
+#win count for player 1 and 2 and draw count, set to 0
 player1Win = 0
 player2Win = 0
+draw = 0
 
 
 #set Image for O and X 
 xImg = PhotoImage(file='x.png') 
 oImg = PhotoImage(file='o.png')
+iconImg = PhotoImage(file='icon.png')
+xoList = ['X','O']
 
 
 #First Interface (Instruction and Game Mode)
@@ -66,22 +69,25 @@ def gameMode():
     
     #Initialize all components needed for first interface
     #create Game header label
-    gameHeader = Label(root, text="Welcome to Tic Tac Toe!",font=("Arial",18))
-    gameHeader.grid(row=0,column=1,pady=10)
+    gameHeader = Label(root, text="Tic Tac Toe!",font=("Arial",10))
+    gameHeader.grid(row=1,column=0,pady=10,padx=10)
+    
+    iconPhoto = Label(root, image=iconImg)
+    iconPhoto.grid(row=2,column=0,padx=10)
     
     #create instruction label
     instructionLabel = Label(root,text='1. The game is played on a grid that\'s 3 squares by 3 squares.\n2. You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.\n3. The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.\n4. When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.',anchor='e', justify='left')
-    instructionLabel.grid(row=1,column=1,pady=10,padx=10)
+    instructionLabel.grid(row=2,column=1,pady=10,padx=10)
     
     #create game mode label
     gameMode = Label(root, text="Select Game Mode:",font=("Arial",13))
-    gameMode.grid(row=2,column=1)
+    gameMode.grid(row=3,column=1)
     
     #create button for game mode options which are multiplayer and play against computer button
     multiBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#000000',fg='white',text='Multiplayer',command=lambda:playerOptions(False))
-    multiBtn.grid(row=3,column=1,padx=10,pady=10)
+    multiBtn.grid(row=4,column=1,pady=10)
     compBtn = Button(root, height=2, width=20, relief='ridge',borderwidth=.5,background='#ff0000',fg='white',text='Play Against Computer',command=lambda:playerOptions(True))
-    compBtn.grid(row=4,column=1,padx=10,pady=10)
+    compBtn.grid(row=5,column=1,pady=10)
     
 
 #Second Interface (Player 1 and 2 name)
@@ -137,33 +143,44 @@ def background():
     #pass global click 
     global click,computerTurn
     
+    #label each button in the grid accordingly
+    btn1.set('1')
+    btn2.set('2')
+    btn3.set('3')
+    btn4.set('4')
+    btn5.set('5')
+    btn6.set('6')
+    btn7.set('7')
+    btn8.set('8')
+    btn9.set('9')
+    
     #create background w/ color for 9 buttons and add it into grid by row and column
     #each of this button (9 buttons) when clicked will execute clickBtn() function
-    back1 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn1,command=lambda:clickBtn(1,0,0,turnLabel))
+    back1 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn1,command=lambda:clickBtn(1,0,0,turnLabel))
     back1.grid(row=0,column=0)
     
-    back2 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn2,command=lambda:clickBtn(2,0,1,turnLabel))
+    back2 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn2,command=lambda:clickBtn(2,0,1,turnLabel))
     back2.grid(row=0,column=1)
     
-    back3 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn3,command=lambda:clickBtn(3,0,2,turnLabel))
+    back3 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn3,command=lambda:clickBtn(3,0,2,turnLabel))
     back3.grid(row=0,column=2)
 
-    back4 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn4,command=lambda:clickBtn(4,1,0,turnLabel))
+    back4 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn4,command=lambda:clickBtn(4,1,0,turnLabel))
     back4.grid(row=1,column=0)
 
-    back5 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn5,command=lambda:clickBtn(5,1,1,turnLabel))
+    back5 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn5,command=lambda:clickBtn(5,1,1,turnLabel))
     back5.grid(row=1,column=1)
 
-    back6 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn6,command=lambda:clickBtn(6,1,2,turnLabel))
+    back6 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn6,command=lambda:clickBtn(6,1,2,turnLabel))
     back6.grid(row=1,column=2)
 
-    back7 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn7,command=lambda:clickBtn(7,2,0,turnLabel))
+    back7 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn7,command=lambda:clickBtn(7,2,0,turnLabel))
     back7.grid(row=2,column=0)
 
-    back8 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn8,command=lambda:clickBtn(8,2,1,turnLabel))
+    back8 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn8,command=lambda:clickBtn(8,2,1,turnLabel))
     back8.grid(row=2,column=1)
     
-    back9 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#f2e6ff',textvariable=btn9,command=lambda:clickBtn(9,2,2,turnLabel))
+    back9 = Button(root, height=10, width=20, relief='groove',borderwidth=.5,background='#ffe6f2',textvariable=btn9,command=lambda:clickBtn(9,2,2,turnLabel))
     back9.grid(row=2,column=2)
     
     #create restart button to restart the game and newBtn for a new game session
@@ -184,10 +201,13 @@ def background():
     #Display win score for each player and add it into the grid
     gameLabel = Label(root, height=3, width=20, text="Win Count", borderwidth=.5).grid(row=4,column=0)
     player1Label = Label(root, height=3,width=20,text=player1.get()+" (Player 1)", bg="white",fg="green",relief='ridge', borderwidth=.5).grid(row=5,column=0,padx=1,pady=1)
-    player2Label = Label(root, height=3,width=20,text=player2.get()+" (Player 2)", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=5, column=1,padx=1,pady=1)
-    
+    player2Label = Label(root, height=3,width=20,text=player2.get()+" (Player 2)", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=5, column=2,padx=1,pady=1)
+        
     player1Count = Label(root, height=3,width=20,text=str(player1Win)+" Win ", bg="white",fg="green",relief='ridge', borderwidth=.5).grid(row=6,column=0,padx=1,pady=1)
-    player2Count = Label(root, height=3,width=20,text=str(player2Win)+" Win ", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=6,column=1,padx=1,pady=1)
+    drawCount = Label(root, height=3,width=20,text=str(draw)+" Draw(s) ", bg="white",fg="black",relief='ridge', borderwidth=.5).grid(row=6,column=1,padx=1,pady=1)
+
+    player2Count = Label(root, height=3,width=20,text=str(player2Win)+" Win ", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=6,column=2,padx=1,pady=1)
+    
 
     #show message (info) which player will play first
     if playerTurn==True:
@@ -236,8 +256,8 @@ def clickBtn(num,row,column,turnLabel):
 #function to play computer and set computer's turn
 def computerMove(turnLabel):
     
-    #if button 5 is empty, click button 5 and set it as 'O'
-    if btn5.get()=='':
+    #if button 5 is not xo, click button 5 and set it as 'O'
+    if btn5.get() not in xoList:
         clickBtn(5,1,1,turnLabel)
     else:
         
@@ -254,48 +274,48 @@ def computerMove(turnLabel):
             # set the computer_Action to False and break the loop
             match btnNo:
                 case 1:
-                    if btn1.get()=='':
+                    if btn1.get() not in xoList:
                         clickBtn(1,0,0,turnLabel)
                         computer_Action = FALSE
                 case 2:
-                    if btn2.get()=='':
+                    if btn2.get() not in xoList:
                         clickBtn(2,0,1,turnLabel)
                         computer_Action = FALSE
                 case 3:
-                     if btn3.get()=='':
+                     if btn3.get() not in xoList:
                         clickBtn(3,0,2,turnLabel)
                         computer_Action = FALSE
                 case 4:
-                    if btn4.get()=='':
+                    if btn4.get() not in xoList:
                         clickBtn(4,1,0,turnLabel)
                         computer_Action = FALSE
                 case 5:
-                    if btn5.get()=='':
+                    if btn5.get() not in xoList:
                         clickBtn(5,1,1,turnLabel)
                         computer_Action = FALSE
                 case 6:
-                    if btn6.get()=='':
+                    if btn6.get() not in xoList:
                         clickBtn(6,1,2,turnLabel)
                         computer_Action = FALSE
                 case 7:
-                    if btn7.get()=='':
+                    if btn7.get() not in xoList:
                         clickBtn(7,2,0,turnLabel)
                         computer_Action = FALSE
                 case 8:
-                    if btn8.get()=='':
+                    if btn8.get() not in xoList:
                         clickBtn(8,2,1,turnLabel)
                         computer_Action = FALSE
                 case 9:
-                    if btn9.get()=='':
+                    if btn9.get() not in xoList:
                         clickBtn(9,2,2,turnLabel)
                         computer_Action = FALSE
                 
                 
 def btnIsAvailable():
     #check if button is already occupied by 'X' or 'O'
-    if btn1.get()!='' and btn2.get()!='' and btn3.get()!='' \
-       and btn4.get()!='' and btn5.get()!='' and btn6.get()!='' \
-       and btn7.get()!='' and btn8.get()!='' and btn9.get()!=''  :  
+    if btn1.get() in xoList and btn2.get() in xoList and btn3.get() in xoList \
+       and btn4.get() in xoList and btn5.get() in xoList and btn6.get() in xoList \
+       and btn7.get() in xoList and btn8.get() in xoList and btn9.get() in xoList  :  
         return FALSE
     else:
         return TRUE        
@@ -326,7 +346,7 @@ def setBtn(num, value):
             
 #check which player win the game
 def checkWin():
-    global count, player1Win, player2Win
+    global count, player1Win, player2Win,draw
     
     #check if the condition met the win probability (combination possibility)
     if btn1.get() == 'X' and btn2.get()=='X' and btn3.get()=='X' or \
@@ -369,6 +389,7 @@ def checkWin():
     elif count==9:
         #show message if draw
         tkinter.messagebox.showinfo("Game Over", "Its a Draw")
+        draw+=1
         restartGame()
 
 #create straight line once player x or o wins
@@ -471,7 +492,7 @@ def clearBtn():
 #new game function for a new game session  
 def newGame():
     #add global variable
-    global player1Win, player2Win,click,count
+    global player1Win, player2Win,click,count,draw,computerTurn,playerTurn
     
     #set player 1 and player 2 into empty string
     player1.set('')
@@ -480,8 +501,12 @@ def newGame():
     #set win count (score) to 0, click to True and count to 0
     player1Win = 0
     player2Win = 0
+    draw=0
     click = True
     count = 0
+    click = True 
+    computerTurn = False
+    playerTurn = True
     
     #clear button value, delete all component in the grid slaves and 
     # execute playeroptions function for first interface

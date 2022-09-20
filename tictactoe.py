@@ -38,33 +38,34 @@ btn7 = StringVar()
 btn8 = StringVar()
 btn9 = StringVar()
 
-#create var player 1 and 2 that holds string value
+#create variable player 1 and 2 that holds string value
 player1 = StringVar()
 player2 = StringVar()
 
 #new game with string var object that will holds string value (manage widget)
 newGame = StringVar()
 
-#Initialize variable needed for count and players turn
+#Initialize variable needed for count, players turn and computer turn
 count = 0
 click = True 
 playerTurn = True
 computerTurn = False
 
-#win count for player 1 and 2 and draw count, set to 0
+#set win and draw count to 0 (default)
 player1Win = 0
 player2Win = 0
 draw = 0
 
 
-#set Image for O and X 
+#set Image for O, X, Icon
 xImg = PhotoImage(file='x.png') 
 oImg = PhotoImage(file='o.png')
 iconImg = PhotoImage(file='icon.png')
+#initialized xoList contains 'X' and 'O'
 xoList = ['X','O']
 
 
-#First Interface (Instruction and Game Mode)
+#function for First Interface (Instruction and Game Mode)
 def gameMode():
     
     #Initialize all components needed for first interface
@@ -72,6 +73,7 @@ def gameMode():
     gameHeader = Label(root, text="Tic Tac Toe!",font=("Arial",10))
     gameHeader.grid(row=1,column=0,pady=10,padx=10)
     
+    #Display icon on the grid
     iconPhoto = Label(root, image=iconImg)
     iconPhoto.grid(row=2,column=0,padx=10)
     
@@ -90,17 +92,17 @@ def gameMode():
     compBtn.grid(row=5,column=1,pady=10)
     
 
-#Second Interface (Player 1 and 2 name)
+#function to execute Second Interface (Player 1 and 2 name or computer)
 def playerOptions(computer):
     global computerTurn
     
-    #set computerTurn into computer variable pass when button is clicked
+    #set computerTurn into computer variable passed when button for game mode is clicked
     computerTurn = computer
     
     #clear grid component
     deleteComponent()
     
-    #label and input (entry widget for players name)
+    #create label and input (entry and label widget for players name)
     l1 = Label(root, text="Enter Player 1 Name: ")
     l1.grid(row=0,column=0,padx=10,pady=10)
     entry1 = Entry(root, bg="white", textvariable=player1)
@@ -111,11 +113,13 @@ def playerOptions(computer):
     
     #if computerTurn is True, set player 2 as a computer
     if computerTurn:
+        #set player to as a computer
         player2.set("Computer")
         entry2 = Entry(root, bg="white", textvariable=player2,state='disabled')
         #add label to grid by row and column
         entry2.grid(row=1,column=1,padx=10,pady=10)
     else:
+        #display entry for player 2 name
         entry2 = Entry(root, bg="white", textvariable=player2)
         #add label to grid by row and column
         entry2.grid(row=1,column=1,padx=10,pady=10)
@@ -128,7 +132,7 @@ def playerOptions(computer):
 #Validate players name function
 def validateStart(player1,player2):
     
-    #check if empty or same return error message and if valid execute second interface => background() function
+    #check if empty or same return error message and if valid execute second interface which is the background() function
     if player1.get() == '' or player2.get() == '':
         tkinter.messagebox.showerror("Invalid Input", "Please Fill in the empty Field!")
     elif player1.get() == player2.get():
@@ -137,13 +141,13 @@ def validateStart(player1,player2):
         background()
         
 
-#Third Interface (X and O game)
+#Third Interface (board or grid of X and O game)
 def background():
     
     #pass global click 
     global click,computerTurn
     
-    #label each button in the grid accordingly
+    #label each button in the grid accordingly from 1-9
     btn1.set('1')
     btn2.set('2')
     btn3.set('3')
@@ -192,20 +196,21 @@ def background():
     
     #check players turn (player x or player o)
     if click == True:
+        #if click is true, display current turn belongs to player1
         turnLabel = Label(root, text="Turn: "+player1.get()+" (Player 1) ", fg="green")
     else:
+        #if click is False, display current turn belongs to player2
         turnLabel = Label(root, text="Turn: "+player2.get()+" (Player 2) ", fg="red")
-        
+    #add label to grid
     turnLabel.grid(row=3, column=1)
     
-    #Display win score for each player and add it into the grid
+    #Display win score for each player and draw count, display it into the grid
     gameLabel = Label(root, height=3, width=20, text="Win Count", borderwidth=.5).grid(row=4,column=0)
     player1Label = Label(root, height=3,width=20,text=player1.get()+" (Player 1)", bg="white",fg="green",relief='ridge', borderwidth=.5).grid(row=5,column=0,padx=1,pady=1)
     player2Label = Label(root, height=3,width=20,text=player2.get()+" (Player 2)", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=5, column=2,padx=1,pady=1)
         
     player1Count = Label(root, height=3,width=20,text=str(player1Win)+" Win ", bg="white",fg="green",relief='ridge', borderwidth=.5).grid(row=6,column=0,padx=1,pady=1)
     drawCount = Label(root, height=3,width=20,text=str(draw)+" Draw(s) ", bg="white",fg="black",relief='ridge', borderwidth=.5).grid(row=6,column=1,padx=1,pady=1)
-
     player2Count = Label(root, height=3,width=20,text=str(player2Win)+" Win ", bg="white",fg="red",relief='ridge', borderwidth=.5).grid(row=6,column=2,padx=1,pady=1)
     
 
@@ -214,6 +219,7 @@ def background():
         tkinter.messagebox.showinfo("Player's Turn", "Player 1: "+player1.get()+" Start First!")
     else:
         tkinter.messagebox.showinfo("Player's Turn", "Player 2: "+player2.get()+" Start First!")
+        #if player to is a computer execute computer move function
         if computerTurn:
             computerMove(turnLabel)
     
@@ -228,7 +234,7 @@ def clickBtn(num,row,column,turnLabel):
         #if it is player x turn, add photo of X into row and column associated with the clicked button position
         labelPhoto = Label(root, image=xImg)
         labelPhoto.grid(row=row,column=column)
-        click = False #player o
+        click = False
         count +=1
         turnLabel.config(text="Turn: "+player2.get()+" (Player 2) ",fg="red")
         #store X string value into the btn that holds stringVar object
@@ -238,7 +244,7 @@ def clickBtn(num,row,column,turnLabel):
          #if it is player o turn, add photo of O into row and column associated with the clicked button position
         labelPhoto = Label(root, image=oImg)
         labelPhoto.grid(row=row,column=column)
-        click = True #player o
+        click = True 
         count+=1
         turnLabel.config(text="Turn: "+player1.get()+" (Player 1) ",fg="green")
          #store O string value into the btn that holds stringVar object
@@ -256,7 +262,7 @@ def clickBtn(num,row,column,turnLabel):
 #function to play computer and set computer's turn
 def computerMove(turnLabel):
     
-    #if button 5 is not xo, click button 5 and set it as 'O'
+    #if button 5 is not x or o, click button 5 and set it as 'O'
     if btn5.get() not in xoList:
         clickBtn(5,1,1,turnLabel)
     else:
@@ -266,12 +272,12 @@ def computerMove(turnLabel):
         while computer_Action:
             btnNo = random.randint(1,9)
             
-            #check if button/slot is already fully occupied, then break the loop, if not execute below
+            #check if button/slot is already fully occupied, then break the loop, if btn is available then execute match statement below
             if btnIsAvailable()==FALSE:
                 break
                 
-            #match the random number to button, if matched, click the button and set it as 'O'
-            # set the computer_Action to False and break the loop
+            #match the random number to button number, if matched, click the button and set it as 'O'
+            # set the computer_Action to False to break the loop
             match btnNo:
                 case 1:
                     if btn1.get() not in xoList:
@@ -312,7 +318,7 @@ def computerMove(turnLabel):
                 
                 
 def btnIsAvailable():
-    #check if button is already occupied by 'X' or 'O'
+    #check if button is already occupied by 'X' or 'O', if fully occupied return false else return true
     if btn1.get() in xoList and btn2.get() in xoList and btn3.get() in xoList \
        and btn4.get() in xoList and btn5.get() in xoList and btn6.get() in xoList \
        and btn7.get() in xoList and btn8.get() in xoList and btn9.get() in xoList  :  
@@ -322,6 +328,7 @@ def btnIsAvailable():
     
 
 #store value x or o into button based on the button number 
+# where num is the button number and value is 'X' or 'O'
 def setBtn(num, value):
     
     match num:
@@ -348,7 +355,7 @@ def setBtn(num, value):
 def checkWin():
     global count, player1Win, player2Win,draw
     
-    #check if the condition met the win probability (combination possibility)
+    #check if the condition met the win probability (combination)
     if btn1.get() == 'X' and btn2.get()=='X' and btn3.get()=='X' or \
        btn4.get() == 'X' and btn5.get()=='X' and btn6.get()=='X' or \
        btn7.get() == 'X' and btn8.get()=='X' and btn9.get()=='X' or \
@@ -358,8 +365,8 @@ def checkWin():
        btn1.get() == 'X' and btn5.get()=='X' and btn9.get()=='X' or \
        btn3.get() == 'X' and btn5.get()=='X' and btn7.get()=='X':
         
-        #if player x win, show message, add 1 to win count and drawlines indicate
-        #which 3 buttons (that contains 'X') that met the condition
+        #if player x win, show message, add 1 to win count and drawlines 
+        # to which 3 buttons (that contains 'X') that met the condition
         
         drawLines('X')
         tkinter.messagebox.showinfo("Game Over", "Player 1: "+player1.get()+ " wins!")
@@ -394,6 +401,7 @@ def checkWin():
 
 #create straight line once player x or o wins
 def drawLines(value):
+    #Value in parameter will be 'X' or 'O'
     lineCondition = [btn1.get() == value and btn2.get()==value and btn3.get()==value, \
        btn4.get() == value and btn5.get()==value and btn6.get()==value , \
        btn7.get() == value and btn8.get()==value and btn9.get()==value , \
@@ -403,15 +411,15 @@ def drawLines(value):
        btn1.get() == value and btn5.get()==value and btn9.get()==value , \
        btn3.get() == value and btn5.get()==value and btn7.get()==value]
     
-    #check which condition statement that return true (condition met) from lineCondition
+    #check which condition statement in lineCondition return true (condition met)
     lineIndex = lineCondition.index(True)
-    #set columns and line width and height
+    #set columns, line width and height
     cols = [0,1,2]
     x1 = 130
     y1 = 2
     
     #check condition index indicating which buttons combinations are met
-    #execute diplay line after getting the cols, rows, width and height of the line
+    #execute display line after getting the cols, rows, width and height of the line
     match lineIndex:
         case 0:
             rows = [0,0,0]
@@ -462,7 +470,7 @@ def restartGame():
     #set count back to 0
     count = 0
     
-    #condition to change the players default turn for each game
+    #condition to set which player will play first in the next game
     if playerTurn==True:
         click = False
         playerTurn = False
@@ -499,6 +507,7 @@ def newGame():
     player2.set('')
     
     #set win count (score) to 0, click to True and count to 0
+    #set all variable to default
     player1Win = 0
     player2Win = 0
     draw=0
@@ -509,7 +518,7 @@ def newGame():
     playerTurn = True
     
     #clear button value, delete all component in the grid slaves and 
-    # execute playeroptions function for first interface
+    # execute gamemode function for first interface
     clearBtn()
     deleteComponent()
     gameMode()

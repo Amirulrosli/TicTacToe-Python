@@ -144,7 +144,7 @@ def validateStart(player1,player2):
 #Third Interface (board or grid of X and O game)
 def background():
     
-    #pass global click 
+    #pass global click and computerturn
     global click,computerTurn
     
     #label each button in the grid accordingly from 1-9

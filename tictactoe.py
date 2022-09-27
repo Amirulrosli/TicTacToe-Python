@@ -65,7 +65,7 @@ iconImg = PhotoImage(file='icon.png')
 xoList = ['X','O']
 
 
-#function for First Interface (Instruction and Game Mode)
+#This function is to generate the First Interface (Instruction and Game Mode)
 def gameMode():
     
     #Initialize all components needed for first interface
@@ -92,7 +92,7 @@ def gameMode():
     compBtn.grid(row=5,column=1,pady=10)
     
 
-#function to execute Second Interface (Player 1 and 2 name or computer)
+#This function is to generate the Second Interface for user to enter player 1 and 2 name
 def playerOptions(computer):
     global computerTurn
     
@@ -141,7 +141,7 @@ def validateStart(player1,player2):
         background()
         
 
-#Third Interface (board or grid of X and O game)
+#This function is to generate the board game (board or grid of X and O game)
 def background():
     
     #pass global click and computerturn
@@ -223,7 +223,7 @@ def background():
         if computerTurn:
             computerMove(turnLabel)
     
-#once one of the 9 buttons clicked, it will execute clickBtn Function
+#once one of the 9 buttons clicked, this function will be executed
 def clickBtn(num,row,column,turnLabel):
     #add global click and count var
     global click,count
@@ -259,7 +259,7 @@ def clickBtn(num,row,column,turnLabel):
     if click==FALSE and computerTurn:
         computerMove(turnLabel)
 
-#function to play computer and set computer's turn
+#This function is executed to play the computer's turn
 def computerMove(turnLabel):
     
     #if button 5 is not x or o, click button 5 and set it as 'O'
@@ -327,7 +327,7 @@ def btnIsAvailable():
         return TRUE        
     
 
-#store value x or o into button based on the button number 
+#This function is to store the value x or o into button based on the button number 
 # where num is the button number and value is 'X' or 'O'
 def setBtn(num, value):
     
@@ -351,7 +351,7 @@ def setBtn(num, value):
         case 9:
             btn9.set(value)
             
-#check which player win the game
+#This function is used to check which player win the game
 def checkWin():
     global count, player1Win, player2Win,draw
     
@@ -399,7 +399,7 @@ def checkWin():
         draw+=1
         restartGame()
 
-#create straight line once player x or o wins
+#This function is used to create straight line once player x or o wins
 def drawLines(value):
     #Value in parameter will be 'X' or 'O'
     lineCondition = [btn1.get() == value and btn2.get()==value and btn3.get()==value, \
@@ -452,7 +452,7 @@ def drawLines(value):
             displayLine(rows,cols,x1,y1)
         
     
-#function to display the line in the grid
+#This function is used to display the line on the grid
 def displayLine(rows,cols,width,height):
     
     #loops through the rows to add the canvas (line) into the grid
@@ -462,7 +462,7 @@ def displayLine(rows,cols,width,height):
         frame.grid(row=rows[i],column=cols[i])
     
     
-#function to restart the game
+#This function is used to restart the game
 def restartGame():
     #add global variables
     global count, click,playerTurn
@@ -485,7 +485,7 @@ def restartGame():
     deleteComponent()
     background()
 
-#clear button object values (string values into empty string)
+#This function is used to clear button object values (string values into empty string)
 def clearBtn():
     btn1.set('')
     btn2.set('')
@@ -497,7 +497,7 @@ def clearBtn():
     btn8.set('')
     btn9.set('')
     
-#new game function for a new game session  
+#This new game function is used to generate a new game session and clear the previous session  
 def newGame():
     #add global variable
     global player1Win, player2Win,click,count,draw,computerTurn,playerTurn
@@ -523,6 +523,7 @@ def newGame():
     deleteComponent()
     gameMode()
 
+#This function is used to delete all components displayed on the grids
 def deleteComponent():
     #Delete all components in the grid
     for component in root.grid_slaves():
@@ -531,7 +532,7 @@ def deleteComponent():
         
 
 
-#execute the game mode and instruction interface
+#execute the first interface of the game which is the instruction page
 gameMode()
 
 #event handler function
